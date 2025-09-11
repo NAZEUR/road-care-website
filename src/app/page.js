@@ -1,103 +1,108 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useEffect, useState } from "react";
+import { ensureSeedData, getReports, getStats } from "../lib/reports";
+import StatsCounter from "../components/StatsCounter";
+import ReportTable from "../components/ReportTable";
+import { useRouter } from "next/navigation";
+import heroImg from "../public/images/welcoming-home-page.jpg";
+
+<div
+  style={{
+    backgroundImage: `url(${heroImg.src})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+  }}
+/>;
+
+export default function HomePage() {
+  const [reports, setReports] = useState([]);
+  const [stats, setStats] = useState({ total: 0, fixed: 0, regionsFixed: 0 });
+  const router = useRouter();
+
+  useEffect(() => {
+    ensureSeedData(); // seed sekali
+    const r = getReports();
+    setReports(r);
+    setStats(getStats(r));
+  }, []);
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div>
+      {/* Hero */}
+      <section
+        className="relative h-[360px] md:h-[420px] flex items-center justify-center"
+        style={{
+          backgroundImage: `url(${heroImg.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative z-10 text-center max-w-3xl mx-auto px-6">
+          <h1 className="text-3xl md:text-5xl font-bold text-white">
+            RoadCare
+          </h1>
+          <p className="mt-4 text-white/90 text-base md:text-lg">
+            Laporkan kerusakan jalan di sekitar Anda. Bersama, kita wujudkan
+            infrastruktur yang aman dan nyaman.
+          </p>
+          <div className="mt-6 flex gap-3 justify-center">
+            <button
+              onClick={() => router.push("/report")}
+              className="px-5 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-blue-600"
+            >
+              Tambah Laporan
+            </button>
+            <button
+              onClick={() => router.push("/map")}
+              className="px-5 py-2.5 rounded-lg bg-white text-gray-900 font-medium hover:bg-gray-100"
+            >
+              Lihat Peta Laporan
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* About */}
+      <section className="max-w-6xl mx-auto px-4 md:px-6 py-10 md:py-12">
+        <div className="card p-6 md:p-8">
+          <h2 className="text-2xl font-semibold">Tentang RoadCare</h2>
+          <p className="mt-3 text-gray-700">
+            RoadCare adalah platform pelaporan jalan rusak berbasis lokasi.
+            Warga dapat melaporkan kondisi jalan, menambahkan foto, dan memantau
+            status perbaikan. Data yang masuk membantu pemangku kebijakan
+            mengambil keputusan yang lebih cepat dan tepat.
+          </p>
+        </div>
+      </section>
+
+      {/* Stats */}
+      <section className="max-w-6xl mx-auto px-4 md:px-6 pb-8">
+        <StatsCounter
+          total={stats.total}
+          fixed={stats.fixed}
+          regionsFixed={stats.regionsFixed}
+        />
+      </section>
+
+      {/* Tabel Laporan Terbaru */}
+      <section className="max-w-6xl mx-auto px-4 md:px-6 pb-16">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl md:text-2xl font-semibold">
+            Laporan Kerusakan Terbaru
+          </h3>
+        </div>
+        <ReportTable reports={reports.slice(0, 8)} />
+        <div className="mt-6">
+          <button
+            onClick={() => router.push("/map")}
+            className="px-5 py-2.5 rounded-lg bg-primary text-white font-medium hover:bg-blue-600"
+          >
+            Lihat Semua di Peta
+          </button>
+        </div>
+      </section>
     </div>
   );
 }
