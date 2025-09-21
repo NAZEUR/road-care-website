@@ -6,14 +6,11 @@ export function badgeClass(status) {
 }
 
 export function formatDate(d) {
-  try {
-    const dt = new Date(d);
-    return dt.toLocaleDateString("id-ID", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  } catch {
-    return d;
-  }
+  const dt = new Date(d);
+  if (isNaN(dt.getTime())) return "-";
+  return dt.toLocaleDateString("id-ID", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }

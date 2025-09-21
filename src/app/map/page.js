@@ -9,11 +9,15 @@ export default function MapPage() {
   const [reports, setReports] = useState([]);
 
   useEffect(() => {
-    setReports(getReports());
+    // Ensure seed data is present if missing
+    import("../../lib/reports").then(mod => {
+      mod.ensureSeedData();
+      setReports(mod.getReports());
+    });
   }, []);
 
   return (
-    <div className="relative h-[calc(100vh-72px-64px)] md:h-[calc(100vh-80px-80px)]">
+    <div className="relative w-full max-w-screen-xl mx-auto h-[calc(100vh-72px-64px)] md:h-[calc(100vh-80px-80px)] overflow-hidden rounded-xl shadow-lg">
       <div className="absolute inset-0">
         <MapView reports={reports} />
       </div>

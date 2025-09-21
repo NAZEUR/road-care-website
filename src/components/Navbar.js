@@ -25,22 +25,13 @@ export default function Navbar() {
           <span className="text-lg font-semibold">RoadCare</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6">
-          <Link href="/" className="hover:text-primary">
+        <div className="flex items-center gap-3">
+          <Link href="/" className="hover:text-primary px-3 py-2 rounded-lg">
             Home
           </Link>
-          <Link href="/report" className="hover:text-primary">
+          <Link href="/report" className="hover:text-primary px-3 py-2 rounded-lg">
             Tambah Laporan
           </Link>
-          <Link href="/map" className="hover:text-primary">
-            Tentang
-          </Link>
-          <Link href="/profile" className="hover:text-primary">
-            Profile
-          </Link>
-        </nav>
-
-        <div className="flex items-center gap-3">
           {!user ? (
             <>
               <Link

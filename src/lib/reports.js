@@ -73,6 +73,18 @@ export function ensureSeedData() {
       createdAt: today,
       userId: "user999",
     },
+    {
+      id: "seed-4",
+      title: "Trotoar Rusak",
+      description: "Trotoar hancur di depan sekolah, membahayakan pejalan kaki.",
+      status: "Belum diperbaiki",
+      lat: -6.9147,
+      lng: 107.6098,
+      city: "Bandung",
+      image: "",
+      createdAt: today,
+      userId: "user888",
+    },
   ];
   saveReports(sample);
   writeJSON(SEEDED_KEY, true);

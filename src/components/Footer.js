@@ -6,17 +6,6 @@ export default function Footer() {
           <p className="text-sm">
             &copy; {new Date().getFullYear()} RoadCare. All rights reserved.
           </p>
-          <nav className="flex items-center gap-4 text-sm">
-            <a href="/" className="hover:underline">
-              Home
-            </a>
-            <a href="/map" className="hover:underline">
-              Tentang
-            </a>
-            <a href="mailto:contact@roadcare.local" className="hover:underline">
-              Contact
-            </a>
-          </nav>
         </div>
       </div>
     </footer>

@@ -1,6 +1,26 @@
 import { badgeClass, formatDate } from "../lib/utils";
+import { useState } from "react";
+import ReportDetail from "./ReportDetail";
+import { saveReports } from "../lib/reports";
 
 export default function ReportTable({ reports = [] }) {
+  const [selected, setSelected] = useState(null);
+  const [data, setData] = useState(reports);
+
+  function handleUpdate(updated) {
+    const newList = data.map((r) => (r.id === updated.id ? updated : r));
+    setData(newList);
+    saveReports(newList);
+    setSelected(null);
+  }
+
+  function handleDelete(id) {
+    const newList = data.filter((r) => r.id !== id);
+    setData(newList);
+    saveReports(newList);
+    setSelected(null);
+  }
+
   return (
     <div className="card overflow-hidden">
       <div className="overflow-x-auto">
@@ -15,14 +35,14 @@ export default function ReportTable({ reports = [] }) {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {reports.length === 0 ? (
+            {data.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-5 py-6 text-center text-gray-600">
                   Belum ada laporan.
                 </td>
               </tr>
             ) : (
-              reports
+              data
                 .slice()
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .map((r) => (
@@ -30,7 +50,7 @@ export default function ReportTable({ reports = [] }) {
                     <td className="px-5 py-3 whitespace-nowrap">
                       <div className="font-medium">{r.title}</div>
                       <div className="text-gray-600 text-xs">
-                        {r.city || "-"}
+                        {r.city && r.city.trim() ? r.city : "Tidak diketahui"}
                       </div>
                     </td>
                     <td className="px-5 py-3 max-w-[360px]">
@@ -43,12 +63,12 @@ export default function ReportTable({ reports = [] }) {
                     </td>
                     <td className="px-5 py-3">{formatDate(r.createdAt)}</td>
                     <td className="px-5 py-3">
-                      <a
-                        href="/map"
+                      <button
                         className="inline-flex items-center px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200"
+                        onClick={() => setSelected(r)}
                       >
                         Detail
-                      </a>
+                      </button>
                     </td>
                   </tr>
                 ))
@@ -56,6 +76,23 @@ export default function ReportTable({ reports = [] }) {
           </tbody>
         </table>
       </div>
+      {selected && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg max-w-md w-full">
+            <ReportDetail
+              report={selected}
+              onUpdate={handleUpdate}
+              onDelete={handleDelete}
+            />
+            <button
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+              onClick={() => setSelected(null)}
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

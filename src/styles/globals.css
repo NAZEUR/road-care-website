@@ -43,3 +43,10 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.bg-primary {
+  background-color: #2563eb;
+}
+.text-primary {
+  color: #2563eb;
+}

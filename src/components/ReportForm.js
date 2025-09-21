@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { addReport } from "../lib/reports";
 import { getCurrentUser } from "../lib/auth";
-import MapView from "./MapView";
+import dynamic from "next/dynamic";
+import MapView from "../../components/MapView";
 import useGeolocation from "../hooks/useGeolocation";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
@@ -61,7 +62,7 @@ export default function ReportForm() {
       lng: form.lng,
       city: form.city.trim() || "—",
       image: form.image || "",
-      createdAt: new Date().toISOString().slice(0, 10),
+      createdAt: new Date().toISOString(),
       userId: user.id,
     };
     addReport(payload);
@@ -70,7 +71,10 @@ export default function ReportForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid md:grid-cols-2 gap-6">
+    <form
+      onSubmit={onSubmit}
+      className="grid md:grid-cols-2 gap-6 min-h-[420px]"
+    >
       <div className="space-y-4">
         <div>
           <label className="block text-sm font-medium">Judul Laporan</label>
